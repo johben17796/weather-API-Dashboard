@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { stringify } from 'node:querystring';
 dotenv.config();
 
 // TODO: Define an interface for the Coordinates object
@@ -9,7 +10,7 @@ interface Coordinates {
 // TODO: Define a class for the Weather object
 class Weather {
   city: string;
-  date: Date;
+  date: string;
   icon: string;
   iconDescription: string;
   temp: number;
@@ -17,7 +18,7 @@ class Weather {
   windSpeed: number;
 
   constructor(  city: string,
-    date: Date,
+    date: string,
     icon: string,
     iconDescription: string,
     temp: number,
@@ -70,20 +71,43 @@ class WeatherService {
   // TODO: Create buildGeocodeQuery method
   private buildGeocodeQuery(): string {}
   // TODO: Create buildWeatherQuery method
-  // private buildWeatherQuery(coordinates: Coordinates): string {}
+  private buildWeatherQuery(coordinates: Coordinates): string {}
   // TODO: Create fetchAndDestructureLocationData method
-  // private async fetchAndDestructureLocationData() {}
+  private async fetchAndDestructureLocationData() {
+    partOne = await this.fetchLocationData()
+    partTwo = await this.destructureLocationData(partOne)
+
+  }
   // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
-  const response = await fetch(`${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`)
+    const weatherQuery = this.buildWeatherQuery(coordinates)
+    const response = await fetch(weatherQuery)
     const weatherData = await response.json();
-    return weatherData;
+    const parsedData = this.parseCurrentWeather(weatherData)
+    const parsedArray = this.buildForecastArray(parsedData, blankArray)
+    return parsedArray
   }
   // TODO: Build parseCurrentWeather method
-  // private parseCurrentWeather(response: any) {}
+  private parseCurrentWeather(response: any) {
+    const weatherObject: Weather = {
+      city: response.city,
+      date: response.date,
+      icon: response.icon,
+      iconDescription: response.iconDescription,
+      temp: response.temp,
+      humidity: response.humidity,
+      windSpeed: response.windSpeed
+    }
+  }
   // TODO: Complete buildForecastArray method
-  // private buildForecastArray(currentWeather: Weather, weatherData: any[]) {}
+  private buildForecastArray(currentWeather: Weather, weatherData: any[]) {
+    
+  }
   // TODO: Complete getWeatherForCity method
-  // async getWeatherForCity(city: string) {}
+  async getWeatherForCity(city: string) {}
+  fetchLocationData()
+  fetchWeatherData()
+
+  return [todaysWeather, tomorrowsWeather, thirdWeather, fourthWeather, fifthWeather]
 }
 export default new WeatherService();
