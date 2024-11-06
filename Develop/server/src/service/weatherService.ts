@@ -71,12 +71,15 @@ class WeatherService {
   // TODO: Create buildGeocodeQuery method
   private buildGeocodeQuery(): string {}
   // TODO: Create buildWeatherQuery method
-  private buildWeatherQuery(coordinates: Coordinates): string {}
+  private buildWeatherQuery(coordinates: Coordinates): string {
+    const weatherQuery = `${this.baseURL}/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${this.apiKey}`
+    return weatherQuery
+  }
   // TODO: Create fetchAndDestructureLocationData method
   private async fetchAndDestructureLocationData() {
-    partOne = await this.fetchLocationData()
-    partTwo = await this.destructureLocationData(partOne)
-
+    const partOne = await this.fetchLocationData()
+    const partTwo = await this.destructureLocationData(partOne)
+    return partTwo
   }
   // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
@@ -101,7 +104,7 @@ class WeatherService {
   }
   // TODO: Complete buildForecastArray method
   private buildForecastArray(currentWeather: Weather, weatherData: any[]) {
-    
+
   }
   // TODO: Complete getWeatherForCity method
   async getWeatherForCity(city: string) {}
